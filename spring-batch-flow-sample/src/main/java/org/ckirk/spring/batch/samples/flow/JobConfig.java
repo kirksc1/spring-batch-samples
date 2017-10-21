@@ -55,60 +55,79 @@ public class JobConfig {
 		return new SimpleAsyncTaskExecutor("spring_batch");
 	}
 
+//	NESTED JOB CONFIGURATION
+//	@Bean
+//	public Job job() {
+//		return jobBuilderFactory.get("job")
+//				.start(new FlowBuilder<SimpleFlow>("splitFlow")
+//						.split(taskExecutor())
+//						.add(new FlowBuilder<SimpleFlow>("flow1")
+//										.start(step1())
+//										.next(step2())
+//										.build(),
+//								new FlowBuilder<SimpleFlow>("flow2")
+//										.start(step3())
+//										.build())
+//						.build())
+//				.next(step4())
+//				.build()
+//				.build();
+//	}
+
 	@Bean
 	public Job job() {
 		return jobBuilderFactory.get("job")
-				.start(splitFlow())
-				.next(step4())
-				.build()
-				.build();
+			.start(splitFlow())
+			.next(step4())
+			.build()
+			.build();
 	}
 
 	@Bean
 	public Flow splitFlow() {
 		return new FlowBuilder<SimpleFlow>("splitFlow")
-				.split(taskExecutor())
-				.add(flow1(), flow2())
-				.build();
+			.split(taskExecutor())
+			.add(flow1(), flow2())
+			.build();
 	}
 
 	@Bean
 	public Flow flow1() {
 		return new FlowBuilder<SimpleFlow>("flow1")
-				.start(step1())
-				.next(step2())
-				.build();
+			.start(step1())
+			.next(step2())
+			.build();
 	}
 
 	@Bean
 	public Flow flow2() {
 		return new FlowBuilder<SimpleFlow>("flow2")
-				.start(step3())
-				.build();
+			.start(step3())
+			.build();
 	}
 
 	@Bean
 	public Step step1() {
 		return stepBuilderFactory.get("step1")
-				.tasklet(new PrintlnTasklet("step1")).build();
+			.tasklet(new PrintlnTasklet("step1")).build();
 	}
 
 	@Bean
 	public Step step2() {
 		return stepBuilderFactory.get("step2")
-				.tasklet(new PrintlnTasklet("step2")).build();
+			.tasklet(new PrintlnTasklet("step2")).build();
 	}
 
 	@Bean
 	public Step step3() {
 		return stepBuilderFactory.get("step3")
-				.tasklet(new PrintlnTasklet("step3")).build();
+			.tasklet(new PrintlnTasklet("step3")).build();
 	}
 
 	@Bean
 	public Step step4() {
 		return stepBuilderFactory.get("step4")
-				.tasklet(new PrintlnTasklet("step4")).build();
+			.tasklet(new PrintlnTasklet("step4")).build();
 	}
 
 }
